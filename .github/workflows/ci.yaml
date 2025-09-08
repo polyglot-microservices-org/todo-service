@@ -1,6 +1,5 @@
 name: CI - Build & Push Docker Image
 
-
 on:
   push:
     branches:
@@ -19,11 +18,29 @@ env:
   IMAGE_NAME: multiapp-todo-app
 
 jobs:
-  build-and-push-docker:
+  ci-pipeline:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: CILinting 🧹
+        run: echo "Running CI Linting..."
+
+      - name: Source Code Analysis 🔍
+        run: echo "Running Source Code Analysis..."
+      
+      - name: Software Component Analysis (SCA) 📦
+        run: echo "Running SCA..."
+
+      - name: Static Application Security Testing (SAST) 🔒
+        run: echo "Running SAST..."
+
+      - name: Build (.jar, etc.) 🛠️
+        run: echo "Building application..."
+
+      - name: Run Unit Tests ✅
+        run: echo "Running unit tests..."
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -31,11 +48,22 @@ jobs:
           username: ${{ env.DOCKER_USERNAME }}
           password: ${{ env.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
+      - name: Create Docker Image 🐳
         run: |
           IMAGE_TAG="${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
           docker build -t $IMAGE_TAG -f ./app/Dockerfile ./app
+
+      - name: Push Docker Image to Docker Hub 🚢
+        run: |
+          IMAGE_TAG="${{ env.DOCKER_REPO }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
           docker push $IMAGE_TAG
+
+      - name: Deploy into some cluster 🚀
+        run: |
+          echo "Deploying to a cluster..."
+
+      - name: Dynamic Application Security Testing (DAST) 🛡️
+        run: echo "Running DAST..."
 
       - name: Update and push deployment manifest
         run: |
