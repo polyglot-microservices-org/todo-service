@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: todo-service
-          image: yaswanthmitta/multiapp-todo-app:20165b149980f3f366e8899dd056d6883c3324a0
+          image: yaswanthmitta/multiapp-todo-app:6db1b1048e2c6683f994a0a47a71464525844f5a
           ports:
             - containerPort: 5001
           env:
